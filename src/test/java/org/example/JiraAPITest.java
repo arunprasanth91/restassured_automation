@@ -26,5 +26,6 @@ public class JiraAPITest {
                 .multiPart("file", new File("screenshot.png")).log().all()
                 .post("rest/api/3/issue/{key}/attachments").then().log().all().assertThat().statusCode(200);
 
+
     }
 }
