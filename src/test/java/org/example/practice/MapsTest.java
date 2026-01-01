@@ -1,4 +1,4 @@
-package org.example;
+package org.example.practice;
 
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.*;

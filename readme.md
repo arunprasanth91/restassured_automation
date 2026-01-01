@@ -39,5 +39,7 @@ API Authorization - bearer token using token id (passed in header)
 Serialization - converting java object to request/response payload.
 DeSerialization - Converting request/response payload to java object.
 
+to avoid SSL certification exceptions - we can use RestAssured method "relaxedHTTPSValidation()"
+
 
 

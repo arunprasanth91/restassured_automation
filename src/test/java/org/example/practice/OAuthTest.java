@@ -1,6 +1,5 @@
-package org.example;
+package org.example.practice;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import org.testng.annotations.Test;
 
