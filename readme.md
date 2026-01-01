@@ -32,4 +32,12 @@ Headers: Meta data (additional details) associated with the API request and resp
 eg: authorization (username/password) or api cookies, content type. 
 
 
+API Authorization - bearer token using token id (passed in header) 
+                    OAUTH using auth type as USERNAME&PASSWORD or CLIENT_ID & CLIENT_SECRET (passed as form param)
+
+
+Serialization - converting java object to request/response payload.
+DeSerialization - Converting request/response payload to java object.
+
+
 

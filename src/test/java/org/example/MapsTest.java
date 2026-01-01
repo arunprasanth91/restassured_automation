@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class MapsTest {
 
@@ -37,6 +38,25 @@ public class MapsTest {
                         "  \"website\": \"http://google.com\",\n" +
                         "  \"language\": \"French-IN\"\n" +
                         "}\n").when().post("maps/api/place/add/json").then().log().all().assertThat().statusCode(200);
+    }
+
+    @Test
+    public void postRequestUsingMapsPojo() {
+        Location location = new Location();
+        location.setLat(-38.383423);
+        location.setLng(33.422332);
+        MapsPojo mapsPojo = new MapsPojo();
+        mapsPojo.setLocation(location);
+        mapsPojo.setAccuracy(50);
+        mapsPojo.setAddress("29, side layout, cohen 091232");
+        mapsPojo.setName("Frontline house123");
+        mapsPojo.setPhone_number("(+91) 983 893 3937");
+        mapsPojo.setTypes(List.of("turf","gym"));
+        mapsPojo.setWebsite("http://google.com");
+        mapsPojo.setLanguage("English-US");
+        RestAssured.baseURI = "https://rahulshettyacademy.com";
+        given().log().all().queryParam("key","qaclick123").header("content-Type","application/json")
+                .body(mapsPojo).when().post("maps/api/place/add/json").then().log().all().assertThat().statusCode(200);
     }
 
 

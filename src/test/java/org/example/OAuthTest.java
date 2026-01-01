@@ -4,6 +4,8 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 
 public class OAuthTest {
@@ -23,7 +25,7 @@ public class OAuthTest {
     }
 
 
-    @Test(dependsOnMethods = "getSessionId")
+    @Test(enabled = false, dependsOnMethods = "getSessionId")
     public void getCourseDetails() {
         String r2=    given()
 
@@ -37,4 +39,31 @@ public class OAuthTest {
 
         System.out.println(r2);
     }
-}
+
+
+    @Test(dependsOnMethods = "getSessionId")
+    public void getCourseDetailsUsingDeserialization() {
+        CoursesPojo coursesPojo = given()
+
+                .queryParams("access_token", access_token)
+
+                .when()
+
+                .get("https://rahulshettyacademy.com/oauthapi/getCourseDetails")
+
+                .as(CoursesPojo.class);
+
+        System.out.printf(coursesPojo.getInstructor()+" , "+coursesPojo.getExpertise());
+
+        // find coursetitle rest assured and get the price
+
+        Courses courses = coursesPojo.getCoursesList();
+        List<API> apiList = courses.getApi();
+        for (API api : apiList){
+            if (api.getCourseTitle().contains("Rest Assured")){
+                System.out.println(api.getCourseTitle() + " price is: "+api.getPrice());
+                break;
+            }
+        }
+    }
+ }
