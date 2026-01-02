@@ -1,8 +1,8 @@
-package org.example.practice;
+package org.example.pojo;
 
 import java.util.List;
 
-public class MapsPojo {
+public class Maps {
     private Location location;
     private int accuracy;
     private String name;
@@ -76,25 +76,3 @@ public class MapsPojo {
         this.language = language;
     }
 }
-
-class Location {
-    private double lat;
-    private double lng;
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-}
-

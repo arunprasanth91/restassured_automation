@@ -31,10 +31,11 @@ BASEURL/RESOURCE/(QUERYORPATH)PARAMETERS.
 Headers: Meta data (additional details) associated with the API request and response.
 eg: authorization (username/password) or api cookies, content type. 
 
+RequestSpecBuilder & ResponseSpecBuilder - to segregate common re-usable code. 
+RequestLoggingFilter & ResponseLoggingFilter - will log all the request and response logs used with RequestSpec
 
 API Authorization - bearer token using token id (passed in header) 
                     OAUTH using auth type as USERNAME&PASSWORD or CLIENT_ID & CLIENT_SECRET (passed as form param)
-
 
 Serialization - converting java object to request/response payload.
 DeSerialization - Converting request/response payload to java object.
