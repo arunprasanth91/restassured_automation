@@ -1,0 +1,1 @@
+{"query":"query($characterId:Int!){\n  character(characterId: $characterId) {\n    name\n    gender\n  }\n  \n  location(locationId:8) {\n    id\n    name\n    dimension\n  }\n  episode(episodeId:8){\n    name\n  }\n  characters(filters: {name : \"Rahul\"}) {\n    info {\n      count\n    }\n    result {\n      type\n      id\n    }\n  }\n}\n","variables":{"characterId":8}}
