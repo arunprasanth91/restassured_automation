@@ -1,4 +1,4 @@
-API (Application Programming Interface) - Intermediatory software or Interface communicates data between frontend and backend applications.
+API (Application Programming Interface) - Intermediary software or Interface communicates data between frontend and backend applications.
 
 REST APIs (Representational State Transfer) - Lightweight protocol, flexible. 
 BASE URI - basepath of the URL 
@@ -74,6 +74,28 @@ query - to retrieve data from backend system
 example query 
 
 mutation - to create data in backend system 
+
+
+
+Core API Validations
+Status Code: Ensure the API returns the correct HTTP status (e.g., 200 for success, 201 for created, or 404 for not found) using the statusCode() method.
+Status Line: Validate the full status line, including the protocol and message (e.g., HTTP/1.1 200 OK) via statusLine().
+Headers: Verify response headers such as Content-Type, Server, or custom security headers like X-XSS-Protection.
+Cookies: Check if specific cookies are set or contain expected session IDs and values.
+
+Response Body Validation
+REST Assured provides powerful tools for inspecting the actual data returned:
+
+JSONPath & XMLPath: Extract and assert specific values within deep or complex data structures (e.g., verifying a user's name in a nested JSON array).
+Schema Validation: Use the JSON Schema Validator to confirm the response body matches a predefined structural contract (data types, mandatory fields, etc.).
+Full Body Matching: Compare the entire response body against an expected string or object.
+
+Advanced Validations
+Response Time: Assert that the API responds within a certain time limit (e.g., under 2 seconds) to meet performance requirements.
+Data Types: Validate that specific fields return the correct type, such as an integer for an id or a string for a username.
+Object Mapping: Deserialize the response into a Plain Old Java Object (POJO) to perform complex logic-based assertions on the data.
+Authentication: Verify that the API correctly handles and enforces authentication mechanisms like OAuth2, Bearer tokens, or Basic Auth.
+
 
 
 
