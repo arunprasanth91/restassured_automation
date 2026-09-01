@@ -37,7 +37,8 @@ public class MapsTest {
                         "  ],\n" +
                         "  \"website\": \"http://google.com\",\n" +
                         "  \"language\": \"French-IN\"\n" +
-                        "}\n").when().post("maps/api/place/add/json").then().log().all().assertThat().statusCode(200);
+                        "}\n").log().all().when().post("maps/api/place/add/json").
+                then().log().all().assertThat().statusCode(200);
     }
 
     @Test
@@ -64,7 +65,8 @@ public class MapsTest {
     public void postRequestBodyValidation() throws IOException {
         RestAssured.baseURI = "https://rahulshettyacademy.com";
        given().log().all().queryParam("key","qaclick123").header("content-Type","application/json")
-                .body(Files.readString(Path.of("src/test/resources/Addplace.json"))).when().post("maps/api/place/add/json").then().log().all().assertThat().statusCode(200).body("scope",equalTo("APP"))
+                .body(Files.readString(Path.of("src/test/resources/Addplace.json"))).when().post("maps/api/place/add/json").
+               then().log().all().assertThat().statusCode(200).body("scope",equalTo("APP"))
                 .header("Server","Apache/2.4.52 (Ubuntu)");
 
     }
