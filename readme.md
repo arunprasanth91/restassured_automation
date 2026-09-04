@@ -96,28 +96,56 @@ Data Types: Validate that specific fields return the correct type, such as an in
 Object Mapping: Deserialize the response into a Plain Old Java Object (POJO) to perform complex logic-based assertions on the data.
 Authentication: Verify that the API correctly handles and enforces authentication mechanisms like OAuth2, Bearer tokens, or Basic Auth.
 
+For Parallel execution using Cucumber we need TestNG or Junit to achieve parallel execution 
+
+TestNg - facilitates for scenario level parallelism using AbstractTestNGCucumberTest class we use dataprovider to run scenarios 
+Junit5 - allows scenario level and feature level parallelism using junit-platform.properties file.
+
+Executing deep searches on JSON responses using Groovy's GPath syntax
+store.book.findAll { it.price < 10 }.title
+store.book.find { it.author == 'Evelyn Waugh' }.price
+store.book*.author
+store.book[-1].title // Last book
+given()
+.when()
+.get("/api/store")
+.then()
+.statusCode(200)
+.body("store.book.findAll { it.price < 10 }.title", hasItems("Sayings of the Century"))
+.body("store.book.find { it.isbn }.price", equalTo(22.99f));
+
+TLS (transport layer security) - Server proves its identify to client issuing a digital certificate. 
+Both side securely generates shared session keys for symmetric encryption without sending actual keys across the network.
+
+MTLS (mutual tls) - forces both client and server to verify each other's identities using digital certificate before data exchange.
+In API automation, you handle this by supplying a KeyStore (your client credentials) and a TrustStore (the server CAs you trust) to RestAssured
+KeyStore (.keyStore()): Holds your client-side private key and public certificate (.p12, .pfx, or .jks). RestAssured sends this to the server when challenged.
+
+TrustStore (.trustStore()): Holds the Certificate Authority (CA) certificates trusted by your test framework. It is used to verify that the target server is legitimate.
+
+import io.restassured.RestAssured;
+
+RestAssured.given()
+.keyStore("src/test/resources/client-identity.p12", "keyStorePassword")
+.trustStore("src/test/resources/server-trust.jks", "trustStorePassword")
+.when()
+.get("https://mtls-protected.internal.domain.com/api/v1/accounts")
+.then()
+.statusCode(200);
 
 
-As a Senior SDET, expertise in REST Assured extends beyond basic `given().when().then()` BDD scripts into framework architecture, security protocols, payload design patterns, and enterprise integration.
+In staging or sandbox environments, servers often use self-signed SSL certificates. 
+Using .relaxedHTTPSValidation() instructs RestAssured to trust all server certificates blindly 
+while still presenting your KeyStore client certificate for authentication.
+RestAssured.given()
+.keyStore("src/test/resources/client-identity.p12", "keyStorePassword")
+.relaxedHTTPSValidation() // Bypasses server certificate/hostname validation checks
+.when()
+.get("https://dev-mtls.internal.domain.com/api/v1/data")
+.then()
+.statusCode(200);
 
-**1. Framework Architecture & Design Patterns**
-
-* **Wrapper Layering**: Decoupling REST Assured logic from test classes by creating a service abstraction layer. Test scripts interact with business methods rather than direct HTTP clients.
-* **Specification Management**: Abstracting repetitive setup using `RequestSpecBuilder` and `ResponseSpecBuilder` for base URIs, headers, authentication, and content-types.
-* **Payload Generation Patterns**: Utilizing the Builder Pattern (via Lombok `@Builder`) and Jackson `ObjectNode` for dynamic payload generation instead of static JSON files.
-* **Thread Safety**: Structuring parallel execution (via TestNG or JUnit 5) using `ThreadLocal` instances for `RequestSpecification`, cookies, and authentication tokens to prevent data collisions across threads.
-
-**2. Serialization, Deserialization & Validation**
-
-* **Advanced POJO Mapping**: Configuring object mappers (Jackson or Gson) to handle dynamic JSON key-value pairs, ignore nulls, handle custom date formats, and deserialize complex nested arrays.
-* **Groovy GPath Expressions**: Executing deep searches on JSON responses using GPath syntax (e.g., `store.book.findAll { it.price < 10 }.title`) for complex data validations.
-* **Contract & Schema Validation**: Automating structural validations using `JsonSchemaValidator` and `XmlPath` to enforce strict API specification compliance.
-
-**3. Authentication, Security & Network Protocols**
-
-* **OAuth 2.0 & Token Refresh**: Automating token management (Client Credentials, Authorization Code grants) and writing filters to automatically refresh expired tokens mid-test execution.
-* **Mutual TLS (mTLS) & KeyStores**: Handling enterprise security using client-side SSL certificates (`.keyStore()`, `.trustStore()`) and custom SSL contexts alongside `.relaxedHTTPSValidation()`.
-* **JWT Verification**: Intercepting and decoding JSON Web Tokens (JWT) within tests to validate claim expirations, roles, and signatures.
+REST Assured’s Filter interface allows you to intercept, modify, and audit requests and responses before and after execution across your entire framework.
 
 **4. Advanced REST Assured Engine Features**
 
@@ -131,10 +159,6 @@ As a Senior SDET, expertise in REST Assured extends beyond basic `given().when()
 * **Mocking & Service Virtualization**: Integrating tools like WireMock or MockServer with REST Assured tests to isolate upstream/downstream service dependencies during execution.
 * **Data Sanitization & Logging**: Masking sensitive data (Authorization headers, secrets) in logs using `LogConfig.blackListHeaders()` to prevent credential leaks in build artifacts.
 * **CI/CD & Reporting Integration**: Integrating execution outputs with frameworks like Allure or ExtentReports and wiring execution into containerized pipelines (Docker, GitHub Actions, Jenkins).
-
-
-
-Evaluating a Senior SDET requires probing beyond standard API automation scripts to assess framework architecture, engine extensibility, security handling, and enterprise test system design.
 
 ### Core Evaluation Dimensions
 
@@ -167,10 +191,6 @@ Evaluating a Senior SDET requires probing beyond standard API automation scripts
 
 * **In-Process Mocking:** Integrating tools like WireMock or MockServer directly within REST Assured suites to mock unstable downstream third-party dependencies during end-to-end runs.
 * **Failure Injection & Resilience:** Testing rate limits (429 status codes), circuit breakers, payload mutations, and backoff/retry configurations under network instability.
-
-
-As a Senior Software Development Engineer in Test (SDET), your mastery of REST Assured must extend beyond basic HTTP requests (`given-when-then`) to architectural design, complex data handling, security, performance, and CI/CD integration.
-
 ---
 
 ### Core Library & Advanced DSL Mechanics

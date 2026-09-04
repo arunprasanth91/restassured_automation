@@ -51,6 +51,17 @@
             <artifactId>cucumber-junit</artifactId>
             <version>7.33.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>5.5.0</version> <!-- Use the latest version compatible with your setup -->
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.46</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -59,6 +70,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
+                    <properties>
+                        <property>
+                            <name>dataproviderthreadcount</name>
+                            <value>5</value>
+                        </property>
+                    </properties>
                 </configuration>
             </plugin>
             <plugin>

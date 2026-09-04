@@ -5,11 +5,17 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.example.utils.RequestConfig;
+import org.example.utils.ThreadLocalInstance;
 import org.junit.runner.Request;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -71,5 +77,33 @@ public class EcommTest {
         String deleteResponse = deleteSpec.when().delete("api/ecom/product/delete-product/{productId}").then().log().all().extract().response().asString();
         System.out.println(deleteResponse);
     }
+
+    @BeforeMethod(enabled = false)
+    public void setup(){
+        RequestConfig config = RequestConfig.builder()
+                .baseUrl("https://example.com")
+                .basePath("/v1/users")
+                .headers(Map.of("Authorization", "Bearer token123", "Content-Type", "application/json"))
+                .build();
+
+        ThreadLocalInstance.initRequestSpec(config);
+    }
+
+    @Test(dependsOnMethods = "setup")
+    public void getUserTest() {
+        // 3. Execute request safely using the ThreadLocal instance
+        Response response = ThreadLocalInstance.getRequestSpec()
+                .queryParam("id", "555")
+                .when()
+                .get();
+
+        response.then().statusCode(200);
+    }
+
+    @AfterMethod (dependsOnMethods = "getUserTest", alwaysRun = true)
+    public void tearDown(){
+        ThreadLocalInstance.unload();
+    }
+
 }
 

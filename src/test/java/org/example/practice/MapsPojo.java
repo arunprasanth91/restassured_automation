@@ -3,7 +3,7 @@ package org.example.practice;
 import java.util.List;
 
 public class MapsPojo {
-    private Location location;
+    private LocationPojo location;
     private int accuracy;
     private String name;
     private String phone_number;
@@ -12,11 +12,11 @@ public class MapsPojo {
     private String website;
     private String language;
 
-    public Location getLocation() {
+    public LocationPojo getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationPojo location) {
         this.location = location;
     }
 
@@ -77,7 +77,7 @@ public class MapsPojo {
     }
 }
 
-class Location {
+class LocationPojo {
     private double lat;
     private double lng;
 

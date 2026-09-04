@@ -43,11 +43,11 @@ public class MapsTest {
 
     @Test
     public void postRequestUsingMapsPojo() {
-        Location location = new Location();
-        location.setLat(-38.383423);
-        location.setLng(33.422332);
+        LocationPojo locationPojo = new LocationPojo();
+        locationPojo.setLat(-38.383423);
+        locationPojo.setLng(33.422332);
         MapsPojo mapsPojo = new MapsPojo();
-        mapsPojo.setLocation(location);
+        mapsPojo.setLocation(locationPojo);
         mapsPojo.setAccuracy(50);
         mapsPojo.setAddress("29, side layout, cohen 091232");
         mapsPojo.setName("Frontline house123");
@@ -58,6 +58,18 @@ public class MapsTest {
         RestAssured.baseURI = "https://rahulshettyacademy.com";
         given().log().all().queryParam("key","qaclick123").header("content-Type","application/json")
                 .body(mapsPojo).when().post("maps/api/place/add/json").then().log().all().assertThat().statusCode(200);
+    }
+
+    @Test
+    public void postRequestUsingLombokBuilderPattern() {
+        Location location = Location.builder().lat(-38.38423).lng(33.422332).build();
+        MapsPojoUsingBuilder mapsBuilder = MapsPojoUsingBuilder.builder()
+                .location(location).accuracy(50).address("29, side layout, cohen 091232").name("Frontline house123")
+                        .phone_number("(+91) 983 893 3937").types(List.of("turf","gym")).website("http://google.com")
+                        .language("English-US").build();
+        RestAssured.baseURI = "https://rahulshettyacademy.com";
+        given().log().all().queryParam("key","qaclick123").header("content-Type","application/json")
+                .body(mapsBuilder).when().post("maps/api/place/add/json").then().log().all().assertThat().statusCode(200);
     }
 
 

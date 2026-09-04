@@ -2,8 +2,11 @@ package org.example.stepDefinitions;
 
 
 import io.cucumber.java.Before;
+import org.example.utils.RequestConfig;
+import org.example.utils.ThreadLocalInstance;
 
 import java.io.FileNotFoundException;
+import java.util.Map;
 
 public class MapsHooks {
 
