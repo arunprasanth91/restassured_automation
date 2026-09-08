@@ -147,6 +147,34 @@ RestAssured.given()
 
 REST Assured’s Filter interface allows you to intercept, modify, and audit requests and responses before and after execution across your entire framework.
 
+RestAssuredConfig - Its a class Used to control HTTPClient behaviors like managing network timeout, handle redirects, customize encoders etc. 
+
+RestAssuredConfig timeoutConfig = RestAssuredConfig.config()
+    .httpClient(HttpClientConfig.httpClientConfig()
+        .setParam("http.connection.timeout", 5000)  // Time to establish connection (ms)
+        .setParam("http.socket.timeout", 5000)      // Time waiting for data packet (ms)
+        .setParam("http.connection-manager.timeout", 2000)); // Time waiting for connection from pool (ms)
+
+// Apply globally
+RestAssured.config = timeoutConfig;
+
+// Or apply to a specific request
+RestAssured.given()
+    .config(timeoutConfig)
+    .get("/endpoint");
+
+
+combining with RestAssured test 
+RestAssured.config = RestAssuredConfig.config()
+            .httpClient(HttpClientConfig.httpClientConfig()
+                .setParam("http.connection.timeout", 5000)
+                .setParam("http.socket.timeout", 5000))
+            .redirect(RedirectConfig.redirectConfig()
+                .followRedirects(true)
+                .maxRedirects(5))
+            .encoderConfig(EncoderConfig.encoderConfig()
+                .defaultContentCharset("UTF-8"));
+
 **4. Advanced REST Assured Engine Features**
 
 * **Custom Filters (Interceptors)**: Implementing REST Assured’s `Filter` interface to manipulate incoming/outgoing requests, log latency metrics, handle global error states, or attach logs directly to test reports.
