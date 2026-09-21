@@ -145,7 +145,10 @@ RestAssured.given()
 .then()
 .statusCode(200);
 
-REST Assured’s Filter interface allows you to intercept, modify, and audit requests and responses before and after execution across your entire framework.
+REST Assured’s Filter interface allows intercepting, modifying, 
+and tracking outgoing HTTP requests and incoming HTTP responses globally or per request.
+
+RestAssuredConfig - Customizing underlying HTTP client parameters, connection timeouts, socket timeouts, redirect policies, and encoder configurations.
 
 **4. Advanced REST Assured Engine Features**
 

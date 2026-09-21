@@ -2,6 +2,11 @@ package org.example.stepDefinitions;
 
 
 import io.cucumber.java.Before;
+import io.restassured.filter.Filter;
+import io.restassured.filter.FilterContext;
+import io.restassured.response.Response;
+import io.restassured.specification.FilterableRequestSpecification;
+import io.restassured.specification.FilterableResponseSpecification;
 import org.example.utils.RequestConfig;
 import org.example.utils.ThreadLocalInstance;
 
